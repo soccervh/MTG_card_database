@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='card',
             name='spell_type',
-            field=models.CharField(choices=[('CR', 'Creature'), ('PL', 'Planeswalker'), ('IN', 'Instant'), ('SO', 'Sorcery'), ('EN', 'Enchantment'), ('AR', 'Artifact')], default=django.utils.timezone.now, max_length=2),
+            field=models.CharField(choices=[('CR', 'Creature'), ('PL', 'Planeswalker'), ('IN', 'Instant'), ('SO', 'Sorcery'), ('EN', 'Enchantment'), ('AR', 'Artifact')], default='CR', max_length=2),
             preserve_default=False,
         ),
     ]

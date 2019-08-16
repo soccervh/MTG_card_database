@@ -24,25 +24,25 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='card',
             name='Abitities',
-            field=models.CharField(default=django.utils.timezone.now, max_length=120),
+            field=models.CharField(default='', max_length=120),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='card',
             name='Artist',
-            field=models.CharField(default=django.utils.timezone.now, max_length=120),
+            field=models.CharField(default='', max_length=120),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='card',
             name='Card_number',
-            field=models.PositiveSmallIntegerField(default=django.utils.timezone.now),
+            field=models.PositiveSmallIntegerField(default=''),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='card',
             name='Flavor_text',
-            field=models.TextField(default=django.utils.timezone.now),
+            field=models.TextField(default=''),
             preserve_default=False,
         ),
         migrations.AlterField(

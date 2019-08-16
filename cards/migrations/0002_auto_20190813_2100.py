@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='card',
             name='content',
-            field=models.TextField(default=django.utils.timezone.now),
+            field=models.TextField(default=''),
             preserve_default=False,
         ),
         migrations.AddField(
