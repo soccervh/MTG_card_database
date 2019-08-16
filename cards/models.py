@@ -4,14 +4,14 @@ from django.db import models
 
 
 class Card(models.Model):
-    name = models.CharField(default=True, max_length=120,)
+    name = models.CharField(default='some default name', max_length=120,)
     # mana = models.CharField(max_length=20)
 
     abilities = models.CharField(null=True, blank=True, max_length=120)
     text =  models.TextField(null=True, blank=True)
     flavor_text = models.TextField(null=True, blank=True)
-    card_number = models.PositiveIntegerField(default=True, max_length=120)
-    artist = models.CharField(default=True, max_length=120)
+    card_number = models.PositiveIntegerField(default=0, max_length=120)
+    artist = models.CharField(default='some magic artist', max_length=120)
     # spell_type
 
     CREATURE = 'CR'
