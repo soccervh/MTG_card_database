@@ -11,7 +11,20 @@ module.exports = {
     },
     module: {
         rules: [
-            { test: /\.jsx?$/, exclude: /node_modules/, loader: "babel-loader" }
+            { test: /\.jsx?$/, exclude: /node_modules/, loader: "babel-loader" },
+            {
+                test: /\.s[ac]ss$/i,
+                use: [
+                    // Creates `style` nodes from JS strings
+                    'style-loader',
+                    // Translates CSS into CommonJS
+                    'css-loader',
+                    'postcss-loader',
+
+                    // Compiles Sass to CSS
+                    'sass-loader',
+                ],
+            }
         ],
     },
     plugins: [
@@ -26,11 +39,15 @@ module.exports = {
         port: 9000,
         headers: { "Access-Control-Allow-Origin": "*" },
         disableHostCheck: true,
+        historyApiFallback: true,
 
         stats: {
             warnings: false
         }
     },
+    resolve: {
+        extensions: ['.js', '.jsx', '.scss', '.css']
+    }
 
 };
 

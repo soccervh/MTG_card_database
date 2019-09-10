@@ -1,0 +1,21 @@
+.navbar {
+ @apply flex items-center justify-between flex-wrap bg-teal-400 p-6;
+}
+.navlink {
+
+
+  @apply block mt-4 text-teal-100  mr-4;
+
+  &:hover {
+    @apply text-white;
+  }
+
+
+
+
+
+
+  @screen lg {
+   @apply inline-block mt-0;
+  }
+}

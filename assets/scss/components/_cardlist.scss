@@ -1,0 +1,24 @@
+.cardlist-container {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+}
+
+.cardlist-left {
+  background: grey;
+}
+.mana {
+  display: flex;
+}
+.cardlist-right {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, auto));
+  background: lightgreen;
+  & > li {
+    width: 150px;
+    padding: 3px;
+    img {
+      border-radius: 5px;
+
+    }
+  }
+}

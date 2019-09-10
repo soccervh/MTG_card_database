@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{%  block content %}
+
+    <h1>{{ object.name }}</h1>
+    <p>{{ object.get_spell_type_display }}</p>
+    <p>{{ object.abilities }}</p>
+    <p>{{ object.text }}</p>
+    <p><i>{{ object.flavor_text }}</i></p>
+    <p>{{ object.card_number }}</p>
+    <p>{{ object.artist }}</p>
+
+
+
+{%  endblock %}

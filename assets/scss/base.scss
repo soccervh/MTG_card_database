@@ -1,0 +1,9 @@
+@tailwind base;
+
+@tailwind components;
+@import "./components/navbar";
+@import "./components/navbar1";
+@import "./components/cardlist";
+@import "./components/card-detail";
+
+@tailwind utilities;

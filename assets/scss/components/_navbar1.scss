@@ -1,0 +1,46 @@
+.nav-links {
+  background: lightblue;
+  font-size: 26px;
+  display: flex;
+  padding: 5px 10px;
+  text-align: Center;
+
+}
+
+.nav-button {
+  background: aliceblue;
+  padding: 10px 20px;
+  margin:10px;
+  border: darkgrey 1px solid;
+  border-radius: 10px;
+
+  &:hover {
+  background: grey;
+  }
+
+}
+
+
+.nav-search {
+  flex: 1;
+}
+.search-input {
+  padding: 0 10px;
+}
+input {
+  border: black 2px solid;
+  border-radius: 10px;
+}
+
+
+@media all and (max-width: 500px) {
+  .nav-links {
+    flex-wrap: wrap;
+    font-size: 16px;
+  }
+  .nav-links > li {
+    flex-basis: 100%;
+  }
+  .nav-search {
+  }
+}
