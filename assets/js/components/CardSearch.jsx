@@ -33,13 +33,13 @@ function CardSearch(props) {
     <div>
       <Formik
         initialValues={{
-          name: "",
-          colorless: "",
-          white: "",
-          blue: "",
-          black: "",
-          red: "",
-          green: "",
+          name: values.name ? values.name : "",
+          colorless: values.colorless ? true : false,
+          white: values.white ? true : false,
+          blue: values.blue ? true : false,
+          black: values.black ? true : false,
+          red: values.red ? true : false,
+          green: values.green ? true : false,
         }}
       >
         {({
@@ -55,13 +55,10 @@ function CardSearch(props) {
         }) => {
           const listColors = manaColors.map((manaColor) => {
             return (
-              <div key={manaColor.color}>
-                <input
+              <div className={"p-2"} key={manaColor.color}>
+                <Field
+                  className={"mr-1"}
                   checked={values[manaColor.color]}
-                  onChange={(e) => {
-                    e.preventDefault();
-                    setFieldValue(manaColor.color, !values[manaColor.color]);
-                  }}
                   type="checkbox"
                   name={manaColor.color}
                 />
@@ -90,7 +87,7 @@ function CardSearch(props) {
                   search
                 </button>
               </form>
-              <Debug />
+              {/*<Debug />*/}
             </div>
           );
         }}
