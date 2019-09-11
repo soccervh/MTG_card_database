@@ -3,6 +3,8 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import useReactRouter from "use-react-router";
 import queryString from "query-string";
+import { Field, Formik } from "formik";
+import { Debug } from "./DebugFormik";
 
 function CardSearch(props) {
   const [cardName, setCardName] = useState([]);
@@ -16,38 +18,84 @@ function CardSearch(props) {
     { color: "red", value: values.red },
     { color: "green", value: values.green },
   ];
+  let query = "?format=json";
+  if (values.name) query += `&name=${values.name}`;
+  manaColors.forEach((manaColor) => {
+    if (manaColor.value) query += `&${manaColor.color}=1`;
+  });
   useEffect(() => {
-    let query = "?format=json";
-    if (values.name) query += `&name=${values.name}`;
-    manaColors.forEach((manaColor) => {
-      if (manaColor.value) query += `&${manaColor.color}=1`;
-    });
     axios.get(`http://127.0.0.1:8000/api/cards/${query}`).then((res) => {
       setCardName(res.data);
     });
-  }, []);
+  }, [query]);
 
-  const listColors = manaColors.map((manaColor) => {
-    return (
-      <div key={manaColor.color}>
-        <input type="checkbox" name={manaColor.color} defaultChecked={manaColor.value} />
-        {manaColor.color}
-      </div>
-    );
-  });
   return (
     <div>
-      <form className={"bg-blue-100 flex items-center "}>
-        <input
-          name="name"
-          type="text"
-          className="search-input"
-          placeholder="Card Search"
-          defaultValue={values.name}
-        />
-        {listColors}
-        <button className={"p-4 bg-blue-400 text-gray-300 tracking-wider "}>search</button>
-      </form>
+      <Formik
+        initialValues={{
+          name: "",
+          colorless: "",
+          white: "",
+          blue: "",
+          black: "",
+          red: "",
+          green: "",
+        }}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          isSubmitting,
+          /* and other goodies */
+          setFieldValue,
+        }) => {
+          const listColors = manaColors.map((manaColor) => {
+            return (
+              <div key={manaColor.color}>
+                <input
+                  checked={values[manaColor.color]}
+                  onChange={(e) => {
+                    e.preventDefault();
+                    setFieldValue(manaColor.color, !values[manaColor.color]);
+                  }}
+                  type="checkbox"
+                  name={manaColor.color}
+                />
+                {manaColor.color}
+              </div>
+            );
+          });
+          return (
+            <div>
+              <form className={"bg-blue-100 flex items-center "}>
+                <Field name="name" type="text" className="search-input" placeholder="Card Search" />
+                {listColors}
+                <button
+                  className={"p-4 bg-blue-400 text-gray-300 tracking-wider "}
+                  onClick={(e) => {
+                    let newQuery = "?format=json";
+                    if (values.name) newQuery += `&name=${values.name}`;
+                    manaColors.forEach((manaColor) => {
+                      if (values[manaColor.color]) newQuery += `&${manaColor.color}=1`;
+                    });
+                    e.preventDefault();
+                    console.log(history);
+                    history.push(`/cardSearch${newQuery}`);
+                  }}
+                >
+                  search
+                </button>
+              </form>
+              <Debug />
+            </div>
+          );
+        }}
+      </Formik>
+
       <div>
         <ul className={"cardlist-right"}>
           {cardName
