@@ -13,9 +13,14 @@
   margin:10px;
   border: darkgrey 1px solid;
   border-radius: 10px;
-
+  &.active {
+    color: red;
+  }
   &:hover {
   background: grey;
+  }
+  &:active {
+    color: red;
   }
 
 }

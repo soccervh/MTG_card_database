@@ -11,11 +11,13 @@
 }
 .cardlist-right {
   display: grid;
+
   grid-template-columns: repeat(auto-fill, minmax(150px, auto));
   background: lightgreen;
   & > li {
     width: 150px;
     padding: 3px;
+    list-style-type: none;
     img {
       border-radius: 5px;
 

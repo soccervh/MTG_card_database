@@ -1,7 +1,28 @@
 from django.db import models
 from autoslug import AutoSlugField
+from django.db.models import Q
 
 # Create your models here.
+
+
+class CardQuerySet(models.QuerySet):
+    def search(self, query=None):
+        qs = self
+        if query is not None:
+            or_lookup = (Q(name__icontains=query)
+                         | Q(text__icontains=query)
+                         | Q(slug__icontains=query))
+            qs = qs.filter(or_lookup).distinct(
+            )  # distinct() is often necessary with Q lookups
+        return qs
+
+
+class CardManager(models.Manager):
+    def get_queryset(self):
+        return CardQuerySet(self.model, using=self._db)
+
+    def search(self, query=None):
+        return self.get_queryset().search(query=query)
 
 
 class Card(models.Model):
@@ -46,6 +67,8 @@ class Card(models.Model):
     flavor_text = models.TextField(null=True, blank=True)
     card_number = models.PositiveIntegerField(default=0)
     artist = models.CharField(default='some magic artist', max_length=120)
+
+    objects = CardManager()
 
     class Meta:
         ordering = ['card_number']

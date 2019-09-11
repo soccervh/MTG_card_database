@@ -14,8 +14,8 @@ function CardList() {
       <div className={"cardlist-left"}>
         <ul>
           {cardName.map((cardName) => (
-            <Link to={`/card/${cardName.slug}`}>
-              <li key={cardName.id}>{cardName.name}</li>
+            <Link key={cardName.id} to={`/card/${cardName.slug}`}>
+              <li>{cardName.name}</li>
             </Link>
           ))}
         </ul>
