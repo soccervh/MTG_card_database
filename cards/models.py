@@ -11,6 +11,8 @@ class CardQuerySet(models.QuerySet):
         if query is not None:
             or_lookup = (Q(name__icontains=query)
                          | Q(text__icontains=query)
+                         | Q(abilities__icontains=query)
+                         | Q(artist__icontains=query)
                          | Q(slug__icontains=query))
             qs = qs.filter(or_lookup).distinct(
             )  # distinct() is often necessary with Q lookups

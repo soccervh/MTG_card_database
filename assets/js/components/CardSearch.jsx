@@ -8,17 +8,45 @@ function CardSearch(props) {
   const [cardName, setCardName] = useState([]);
   const { history, location, match } = useReactRouter();
   const values = queryString.parse(location.search);
+  const manaColors = [
+    { color: "colorless", value: values.colorless },
+    { color: "white", value: values.white },
+    { color: "blue", value: values.blue },
+    { color: "black", value: values.black },
+    { color: "red", value: values.red },
+    { color: "green", value: values.green },
+  ];
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/cards/?name=${values.name}&format=json`).then((res) => {
+    let query = "?format=json";
+    if (values.name) query += `&name=${values.name}`;
+    manaColors.forEach((manaColor) => {
+      if (manaColor.value) query += `&${manaColor.color}=1`;
+    });
+    axios.get(`http://127.0.0.1:8000/api/cards/${query}`).then((res) => {
       setCardName(res.data);
     });
   }, []);
 
+  const listColors = manaColors.map((manaColor) => {
+    return (
+      <div key={manaColor.color}>
+        <input type="checkbox" name={manaColor.color} defaultChecked={manaColor.value} />
+        {manaColor.color}
+      </div>
+    );
+  });
   return (
     <div>
-      <form>
-        <input name="name" type="text" className="search-input" placeholder="Card Search" />
-        <button>search</button>
+      <form className={"bg-blue-100 flex items-center "}>
+        <input
+          name="name"
+          type="text"
+          className="search-input"
+          placeholder="Card Search"
+          defaultValue={values.name}
+        />
+        {listColors}
+        <button className={"p-4 bg-blue-400 text-gray-300 tracking-wider "}>search</button>
       </form>
       <div>
         <ul className={"cardlist-right"}>
