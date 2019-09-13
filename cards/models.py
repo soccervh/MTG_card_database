@@ -86,12 +86,35 @@ class Card(models.Model):
     def __str__(self):
         return f"Card #{self.card_number} {self.name}"
 
+    def get_color(self):
+        color_list = []
+        if self.mana_colorless is not 0:
+            color_list += ['colorless']
+        if self.mana_white is not 0:
+            color_list += ['white']
+        if self.mana_blue is not 0:
+            color_list += ['blue']
+        if self.mana_black is not 0:
+            color_list += ['black']
+        if self.mana_red is not 0:
+            color_list += ['red']
+        if self.mana_green is not 0:
+            color_list += ['green']
+        return color_list
+
 
 class Deck(models.Model):
     name = models.CharField(max_length=120, default='Deck Name')
     cards = models.ManyToManyField(Card,
                                    through='CardsInDeck',
                                    through_fields=('deck', 'card'))
+
+    def get_color(self):
+        color_list = []
+        for card in self.cards.all():
+            color_list += card.get_color()
+
+        return set(color_list)
 
     def __str__(self):
         return self.name

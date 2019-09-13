@@ -24,6 +24,8 @@ class CardsInDeckSerializer(CardSerializer):
 class DeckSerializer(serializers.ModelSerializer):
     cards = CardsInDeckSerializer(many=True, source='cardsindeck_set')
 
+    color = serializers.ReadOnlyField(source='get_color')
+
     class Meta:
         model = Deck
         fields = "__all__"

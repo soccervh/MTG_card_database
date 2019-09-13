@@ -6,6 +6,8 @@ import { Counter } from "../playground/counter.jsx";
 import { Link, Route, Switch } from "react-router-dom";
 import CardSearch from "./CardSearch";
 import DeckBuilder from "./DeckBuilder";
+import DeckList from "./DeckList";
+import Deck from "./Deck";
 function HomeSwitch() {
   const NotFoundPage = () => (
     <div>
@@ -20,6 +22,8 @@ function HomeSwitch() {
       <Route path={"/c"} component={Counter} exact={true} />
       <Route path={"/cardSearch"} component={CardSearch} exact={true} />
       <Route path={"/deck-builder"} component={DeckBuilder} exact={true} />
+      <Route path={"/decks"} component={DeckList} exact={true} />
+      <Route path={"/deck/:name"} component={Deck} exact={true} />
       <Route component={NotFoundPage} />
       <Link to={"/"}>Go Home</Link>
       <Link to={"/cardinfo"}>Go cardinfo</Link>

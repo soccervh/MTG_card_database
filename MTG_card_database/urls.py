@@ -34,6 +34,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home_page),
     path('deck-builder/', home_page),
+    path('decks/', home_page),
+    re_path(r'deck/*', home_page),
     re_path(r'card/.*', home_page),
     url(r'^api-auth/',
         include('rest_framework.urls', namespace='rest_framework'))

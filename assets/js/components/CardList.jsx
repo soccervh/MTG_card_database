@@ -3,30 +3,30 @@ import axios from "axios";
 import { BrowserRouter, Route, Switch, Link } from "react-router-dom";
 
 function CardList() {
-  const [cardName, setCardName] = useState([]);
+  const [cards, setCards] = useState([]);
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/api/cards/?format=json").then((res) => {
-      setCardName(res.data);
+      setCards(res.data);
     });
   }, []);
   return (
     <div className={"cardlist-container"}>
       <div className={"cardlist-left"}>
         <ul>
-          {cardName.map((cardName) => (
-            <Link key={cardName.id} to={`/card/${cardName.slug}`}>
-              <li>{cardName.name}</li>
+          {cards.map((card) => (
+            <Link key={card.id} to={`/card/${card.slug}`}>
+              <li>{card.name}</li>
             </Link>
           ))}
         </ul>
       </div>
       <ul className={"cardlist-right"}>
-        {cardName
-          .filter((cardName) => cardName.image)
-          .map((cardName) => (
-            <li key={cardName.id}>
-              <Link to={`/card/${cardName.slug}`}>
-                <img src={cardName.image} alt="" />
+        {cards
+          .filter((card) => card.image)
+          .map((card) => (
+            <li key={card.id}>
+              <Link to={`/card/${card.slug}`}>
+                <img src={card.image} alt="" />
               </Link>
             </li>
           ))}
