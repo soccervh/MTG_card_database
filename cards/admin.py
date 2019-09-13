@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Card
+from .models import Card, CardsInDeck, Deck
 # Register your models here.
 
 
@@ -13,3 +13,7 @@ class CardAdmin(admin.ModelAdmin):
     list_editable = ('mana_green', 'mana_white', 'mana_blue', 'mana_black',
                      'mana_red', 'mana_colorless')
     readonly_fields = ['slug']
+
+
+admin.site.register(CardsInDeck)
+admin.site.register(Deck)

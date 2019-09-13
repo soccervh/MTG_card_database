@@ -33,6 +33,10 @@ class Card(models.Model):
         default='some default name',
         max_length=120,
     )
+    LEGENDARY_CHOICES = [('Legendary', ((False, 'No'), (True, 'Yes')))]
+    is_legendary = models.BooleanField(choices=LEGENDARY_CHOICES,
+                                       default=False)
+
     X_MANA_COST = -1
     # mana = models.CharField(max_length=20)
     slug = AutoSlugField(populate_from='name', always_update=True)
@@ -55,6 +59,7 @@ class Card(models.Model):
     spell_type = models.CharField(max_length=2,
                                   choices=SPELL_TYPE,
                                   default=CREATURE)
+    creature_type = models.CharField(null=True, blank=True, max_length=120)
     NUMBER_OF_MANA = [(0, 0), (1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6),
                       (7, 7), (8, 8), (9, 9), (10, 10), (X_MANA_COST, "X")]
     mana_colorless = models.IntegerField(default=0, choices=NUMBER_OF_MANA)
@@ -80,3 +85,25 @@ class Card(models.Model):
 
     def __str__(self):
         return f"Card #{self.card_number} {self.name}"
+
+
+class Deck(models.Model):
+    name = models.CharField(max_length=120, default='Deck Name')
+    cards = models.ManyToManyField(Card,
+                                   through='CardsInDeck',
+                                   through_fields=('deck', 'card'))
+
+    def __str__(self):
+        return self.name
+
+
+class CardsInDeck(models.Model):
+    card = models.ForeignKey(Card, on_delete=models.CASCADE)
+    deck = models.ForeignKey(Deck, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
+
+    class Meta:
+        unique_together = ['card', 'deck']
+
+    def __str__(self):
+        return f"{self.deck.name}: {self.card} x{self.quantity}"

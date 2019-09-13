@@ -27,7 +27,7 @@ function NavBar1() {
           <Link to={"/cards"}>Cards</Link>
         </li>
         <li className="nav-button">
-          <Link to={"/about"}>About</Link>
+          <Link to={"/deck-builder"}>Deck Builder</Link>
         </li>
         <li
           className={classNames({

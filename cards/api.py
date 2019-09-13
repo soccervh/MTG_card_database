@@ -1,20 +1,38 @@
 from rest_framework import serializers, viewsets, routers
 
 # Serializers define the API representation.
-from cards.models import Card
+from cards.models import Card, Deck, CardsInDeck
 
 
-class CardSerializer(serializers.HyperlinkedModelSerializer):
+class CardSerializer(serializers.ModelSerializer):
     spell_type = serializers.CharField(source='get_spell_type_display', )
 
     class Meta:
         model = Card
-        fields = [
-            'name', 'id', 'spell_type', 'abilities', 'text', 'flavor_text',
-            'card_number', 'artist', 'slug', 'image', 'mana_green',
-            'mana_white', 'mana_blue', 'mana_black', 'mana_red',
-            'mana_colorless'
-        ]
+        fields = "__all__"
+
+
+class CardsInDeckSerializer(CardSerializer):
+    quantity = serializers.ReadOnlyField()
+    card = CardSerializer()
+
+    class Meta:
+        model = CardsInDeck
+        fields = ['card', 'quantity']
+
+
+class DeckSerializer(serializers.ModelSerializer):
+    cards = CardsInDeckSerializer(many=True, source='cardsindeck_set')
+
+    class Meta:
+        model = Deck
+        fields = "__all__"
+
+
+class DeckViewSet(viewsets.ModelViewSet):
+    queryset = Deck.objects.all()
+    serializer_class = DeckSerializer
+    lookup_field = 'name'
 
 
 # ViewSets define the view behavior.
@@ -54,3 +72,4 @@ class CardViewSet(viewsets.ModelViewSet):
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'cards', CardViewSet)
+router.register(r'decks', DeckViewSet)

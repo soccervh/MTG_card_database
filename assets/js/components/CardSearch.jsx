@@ -74,7 +74,7 @@ function CardSearch(props) {
                 <button
                   className={"p-4 bg-blue-400 text-gray-300 tracking-wider "}
                   onClick={(e) => {
-                    let newQuery = "?format=json";
+                    let newQuery = "?";
                     if (values.name) newQuery += `&name=${values.name}`;
                     manaColors.forEach((manaColor) => {
                       if (values[manaColor.color]) newQuery += `&${manaColor.color}=1`;
