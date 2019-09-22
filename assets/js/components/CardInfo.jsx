@@ -8,7 +8,7 @@ import WhiteMana from "./ManaTypes/WhiteMana";
 import Mana from "./Mana";
 
 function CardInfo(props) {
-  const [cardInfo, setCardInfo] = useState([]);
+  const [cardInfo, setCardInfo] = useState({});
   useEffect(() => {
     axios
       .get(`http://127.0.0.1:8000/api/cards/${props.match.params.slug}/?format=json`)
@@ -16,28 +16,34 @@ function CardInfo(props) {
         setCardInfo(res.data);
       });
   }, []);
+  if (!cardInfo.name) return "Loading";
+  let legendary = "";
+  if (cardInfo.is_legendary) {
+    legendary = "Legendary ";
+  }
+  const manaProps = {};
+  cardInfo.mana.forEach((manaObject) => {
+    manaProps[manaObject.mana.name] = manaObject.quantity;
+  });
   return (
     <div className={"cardInfo-container"}>
       <img className={"image"} src={cardInfo.image} alt="" />
 
       <div className={"cardInfo-cardInformation"}>
-        <div className={"name-mana"}>
-          <p className={"name"}>{cardInfo.name}</p>
-          <div className="icons">
-            <Mana
-              colorless={cardInfo.mana_colorless}
-              white={cardInfo.mana_white}
-              blue={cardInfo.mana_blue}
-              black={cardInfo.mana_black}
-              red={cardInfo.mana_red}
-              green={cardInfo.mana_green}
-            />
-          </div>
-        </div>
-        <p className={"spell-type"}>{cardInfo.spell_type}</p>
+        <p className={"icons"}>
+          {cardInfo.name}
+          <Mana {...manaProps} />
+        </p>
+
+        <p className={"spell-type"}>
+          {legendary}
+          {cardInfo.spell_type} - {cardInfo.creature_type}
+        </p>
         <p className={"abilities"}>{cardInfo.abilities}</p>
         <p className={"text"} dangerouslySetInnerHTML={{ __html: cardInfo.text }}></p>
-        <p className={"flavor"}>{cardInfo.flavor_text}</p>
+        <p className={"flavor"}>
+          <i>{cardInfo.flavor_text}</i>
+        </p>
         <p className={"card-number"}>Card - {cardInfo.card_number}</p>
         <p className={"artist"}>Artist - {cardInfo.artist}</p>
       </div>

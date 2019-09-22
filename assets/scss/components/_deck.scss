@@ -1,14 +1,25 @@
-.deck {
+.deck-images {
   background: aliceblue;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, auto));
+  grid-template-columns: repeat(auto-fill, minmax(55px, auto));
+  grid-template-rows: 200px;
+  position: relative;
+  max-width:50px;
+  background: aqua;
+  img {
+    position: relative;
+
+  }
 
 }
 
-.card-images {
-  position: relative;
-  img {
-    position: absolute;
+.deck-names {
+  background: aliceblue;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, auto));
+  grid-template-rows: 200px;
 
-  }
+}
+.card-images {
+  display: grid;
 }

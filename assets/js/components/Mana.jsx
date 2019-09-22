@@ -5,8 +5,17 @@ import RedMana from "./ManaTypes/RedMana";
 import BlackMana from "./ManaTypes/BlackMana";
 import BlueMana from "./ManaTypes/BlueMana";
 import ColorlessMana from "./ManaTypes/ColorlessMana";
+import BlueWhiteMana from "./ManaTypes/BlueWhiteMana";
 
-function Mana({ colorless = 0, red = 0, white = 0, blue = 0, black = 0, green = 0 }) {
+function Mana({
+  colorless = 0,
+  red = 0,
+  white = 0,
+  blue = 0,
+  black = 0,
+  green = 0,
+  bluewhite = 0,
+}) {
   return (
     <div className={"mana"}>
       {colorless != 0 && <ColorlessMana amount={colorless} />}
@@ -34,6 +43,11 @@ function Mana({ colorless = 0, red = 0, white = 0, blue = 0, black = 0, green = 
         .fill(0)
         .map(() => (
           <GreenMana></GreenMana>
+        ))}
+      {Array(bluewhite)
+        .fill(0)
+        .map(() => (
+          <BlueWhiteMana />
         ))}
     </div>
   );

@@ -10,6 +10,7 @@ function CardSearch(props) {
   const [cardName, setCardName] = useState([]);
   const { history, location, match } = useReactRouter();
   const values = queryString.parse(location.search);
+  console.log(values);
   const manaColors = [
     { color: "colorless", value: values.colorless },
     { color: "white", value: values.white },

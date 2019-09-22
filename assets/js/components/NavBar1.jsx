@@ -40,9 +40,9 @@ function NavBar1() {
         >
           <Link to={"/contact"}>Contact</Link>
         </li>
-        <li className="nav-button nav-search">
-          <input type="text" className="search-input" placeholder="Card Search" />
-        </li>
+        {/*<li className="nav-button nav-search">*/}
+        {/*  <input type="text" className="search-input" placeholder="Card Search" />*/}
+        {/*</li>*/}
         <li
           className={classNames({
             "nav-button": true,

@@ -30,9 +30,18 @@ class CardManager(models.Manager):
 class Card(models.Model):
     name = models.CharField(
         unique=True,
-        default='some default name',
+        default='',
         max_length=120,
     )
+    #Expansion for MTG
+    THRONE_OF_ELDRAINE = 'ELD'
+    EXPANSION = [
+        (THRONE_OF_ELDRAINE, 'Throne of Eldraine (ELD)'),
+    ]
+    expansion = models.CharField(max_length=25,
+                                 choices=EXPANSION,
+                                 default=THRONE_OF_ELDRAINE)
+
     LEGENDARY_CHOICES = [('Legendary', ((False, 'No'), (True, 'Yes')))]
     is_legendary = models.BooleanField(choices=LEGENDARY_CHOICES,
                                        default=False)
@@ -41,6 +50,8 @@ class Card(models.Model):
     # mana = models.CharField(max_length=20)
     slug = AutoSlugField(populate_from='name', always_update=True)
     image = models.ImageField(upload_to='cards', blank=True, null=True)
+    card_number = models.PositiveIntegerField(default=0)
+
     # spell_type
     CREATURE = 'CR'
     PLANESWALKER = 'PL'
@@ -48,6 +59,8 @@ class Card(models.Model):
     SORCERY = 'SO'
     ENCHANTMENT = 'EN'
     ARTIFACT = 'AR'
+    ARTIFACT_CREATURE = 'AC'
+    LAND = 'LD'
     SPELL_TYPE = [
         (CREATURE, 'Creature'),
         (PLANESWALKER, 'Planeswalker'),
@@ -55,25 +68,25 @@ class Card(models.Model):
         (SORCERY, 'Sorcery'),
         (ENCHANTMENT, 'Enchantment'),
         (ARTIFACT, 'Artifact'),
+        (ARTIFACT_CREATURE, 'Artifact Creature'),
+        (LAND, 'Land'),
     ]
     spell_type = models.CharField(max_length=2,
                                   choices=SPELL_TYPE,
                                   default=CREATURE)
     creature_type = models.CharField(null=True, blank=True, max_length=120)
-    NUMBER_OF_MANA = [(0, 0), (1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6),
-                      (7, 7), (8, 8), (9, 9), (10, 10), (X_MANA_COST, "X")]
-    mana_colorless = models.IntegerField(default=0, choices=NUMBER_OF_MANA)
-    mana_white = models.IntegerField(default=0, choices=NUMBER_OF_MANA)
-    mana_blue = models.IntegerField(default=0, choices=NUMBER_OF_MANA)
-    mana_black = models.IntegerField(default=0, choices=NUMBER_OF_MANA)
-    mana_red = models.IntegerField(default=0, choices=NUMBER_OF_MANA)
-    mana_green = models.IntegerField(default=0, choices=NUMBER_OF_MANA)
+
+    mana = models.ManyToManyField('Mana',
+                                  through='ManaForCard',
+                                  through_fields=('card', 'mana'))
 
     abilities = models.CharField(null=True, blank=True, max_length=120)
     text = models.TextField(null=True, blank=True)
     flavor_text = models.TextField(null=True, blank=True)
-    card_number = models.PositiveIntegerField(default=0)
-    artist = models.CharField(default='some magic artist', max_length=120)
+    power = models.PositiveIntegerField(default=0)
+    defense = models.PositiveIntegerField(default=0)
+    loyalty = models.PositiveIntegerField(default=0)
+    artist = models.CharField(default='', max_length=120)
 
     objects = CardManager()
 
@@ -87,20 +100,7 @@ class Card(models.Model):
         return f"Card #{self.card_number} {self.name}"
 
     def get_color(self):
-        color_list = []
-        if self.mana_colorless is not 0:
-            color_list += ['colorless']
-        if self.mana_white is not 0:
-            color_list += ['white']
-        if self.mana_blue is not 0:
-            color_list += ['blue']
-        if self.mana_black is not 0:
-            color_list += ['black']
-        if self.mana_red is not 0:
-            color_list += ['red']
-        if self.mana_green is not 0:
-            color_list += ['green']
-        return color_list
+        return [x.name for x in self.mana.all()]
 
 
 class Deck(models.Model):
@@ -130,3 +130,19 @@ class CardsInDeck(models.Model):
 
     def __str__(self):
         return f"{self.deck.name}: {self.card} x{self.quantity}"
+
+
+class Mana(models.Model):
+    name = models.CharField(max_length=120)
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class ManaForCard(models.Model):
+    mana = models.ForeignKey(Mana, on_delete=models.CASCADE)
+    card = models.ForeignKey(Card, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=0)
+
+    class Meta:
+        unique_together = ['mana', 'card']

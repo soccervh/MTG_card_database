@@ -1,11 +1,28 @@
+from django.db.models import Q
 from rest_framework import serializers, viewsets, routers
 
 # Serializers define the API representation.
-from cards.models import Card, Deck, CardsInDeck
+from cards.models import Card, Deck, CardsInDeck, Mana, ManaForCard
+
+
+class ManaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Mana
+        fields = "__all__"
+
+
+class ManaForCardSerializer(ManaSerializer):
+    quantity = serializers.ReadOnlyField()
+    mana = ManaSerializer()
+
+    class Meta:
+        model = ManaForCard
+        fields = ['mana', 'quantity']
 
 
 class CardSerializer(serializers.ModelSerializer):
     spell_type = serializers.CharField(source='get_spell_type_display', )
+    mana = ManaForCardSerializer(many=True, source='manaforcard_set')
 
     class Meta:
         model = Card
@@ -56,19 +73,20 @@ class CardViewSet(viewsets.ModelViewSet):
         if cardname is not None:
             queryset = queryset.search(cardname)
 
+        color_queryset = Q()
         if colorless is not None:
-            queryset = queryset.filter(mana_colorless__gte=1)
+            color_queryset |= Q(mana__name='colorless')
         if white is not None:
-            queryset = queryset.filter(mana_white__gte=1)
+            color_queryset |= (Q(mana__name__in=['white', 'bluewhite']))
         if blue is not None:
-            queryset = queryset.filter(mana_blue__gte=1)
+            color_queryset |= (Q(mana__name__in=['blue', 'bluewhite']))
         if black is not None:
-            queryset = queryset.filter(mana_black__gte=1)
+            color_queryset |= Q(mana__name='black')
         if red is not None:
-            queryset = queryset.filter(mana_red__gte=1)
+            color_queryset |= Q(mana__name='red')
         if green is not None:
-            queryset = queryset.filter(mana_green__gte=1)
-        return queryset
+            color_queryset |= Q(mana__name='green')
+        return queryset.filter(color_queryset)
 
 
 # Routers provide an easy way of automatically determining the URL conf.
