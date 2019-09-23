@@ -6,6 +6,7 @@ import RedMana from "./ManaTypes/RedMana";
 import BlueMana from "./ManaTypes/BlueMana";
 import WhiteMana from "./ManaTypes/WhiteMana";
 import Mana from "./Mana";
+import { Link } from "react-router-dom";
 
 function CardInfo(props) {
   const [cardInfo, setCardInfo] = useState({});
@@ -47,6 +48,7 @@ function CardInfo(props) {
         <p className={"card-number"}>Card - {cardInfo.card_number}</p>
         <p className={"artist"}>Artist - {cardInfo.artist}</p>
       </div>
+      <Link to={`/card-update/${cardInfo.slug}`}>Update</Link>
     </div>
   );
 }

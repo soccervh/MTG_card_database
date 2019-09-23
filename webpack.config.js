@@ -24,6 +24,26 @@ module.exports = {
                     // Compiles Sass to CSS
                     'sass-loader',
                 ],
+            },
+            {
+                test: /\.css$/i,
+                use: [
+                    // Creates `style` nodes from JS strings
+                    'style-loader',
+                    // Translates CSS into CommonJS
+                    'css-loader',
+                    'postcss-loader',
+
+                ],
+            },
+            {
+                test: /\.svg$/i,
+                use: [
+                    // Creates `style` nodes from JS strings
+                    'file-loader',
+                    // Translates CSS into CommonJS
+
+                ],
             }
         ],
     },

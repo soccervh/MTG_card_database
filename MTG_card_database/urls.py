@@ -35,9 +35,11 @@ urlpatterns = [
     path('', home_page),
     path('deck-builder/', home_page),
     path('cards', home_page),
+    path('card-creator/', home_page),
     path('decks/', home_page),
     re_path(r'deck/*', home_page),
     re_path(r'card/.*', home_page),
+    re_path(r'card-update/.*', home_page),
     url(r'^api-auth/',
         include('rest_framework.urls', namespace='rest_framework'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

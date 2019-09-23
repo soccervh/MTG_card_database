@@ -8,6 +8,8 @@ import CardSearch from "./CardSearch";
 import DeckBuilder from "./DeckBuilder";
 import DeckList from "./DeckList";
 import Deck from "./Deck";
+import CardCreator from "./CardCreator";
+import CardUpdate from "./CardUpdate";
 function HomeSwitch() {
   const NotFoundPage = () => (
     <div>
@@ -19,8 +21,10 @@ function HomeSwitch() {
       <Route path={"/contact"} component={ContactPage} exact={true} />
       <Route path={"/"} component={CardList} exact={true} />
       <Route path={"/card/:slug"} component={CardInfo} exact={true} />
+      <Route path={"/card-update/:slug"} component={CardUpdate} exact={true} />
       <Route path={"/c"} component={Counter} exact={true} />
       <Route path={"/cardSearch"} component={CardSearch} exact={true} />
+      <Route path={"/card-creator"} component={CardCreator} exact={true} />
       <Route path={"/deck-builder"} component={DeckBuilder} exact={true} />
       <Route path={"/decks"} component={DeckList} exact={true} />
       <Route path={"/deck/:name"} component={Deck} exact={true} />

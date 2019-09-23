@@ -20,7 +20,27 @@ $black: #383838;
   grid-column: 2;
 }
 }
+.card-creator-form {
+  padding: 5px;
+  display: grid;
+  justify-content: center;
+  grid-template-columns: 130px 300px;
+  grid-gap: 10px;
+  background: lightblue;
+  * {
+    padding: 5px;
+    border: cornflowerblue 1px solid;
+    border-radius: 5px;
+    background: azure;
+  }
 
+:nth-child(odd) {
+  background: beige;
+  text-align: right;
+  align-items: center;
+}
+
+}
 .cardInfo-cardInformation {
   grid-column: 2;
 border-bottom: $black 3px solid;

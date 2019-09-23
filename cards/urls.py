@@ -1,5 +1,6 @@
 from django.urls import path, include
 
-from cards.api import router
+import cards
+from cards.api.urls import router
 
-urlpatterns = [path('api/', include(router.urls))]
+urlpatterns = [path('api/', include(cards.api.urls))]

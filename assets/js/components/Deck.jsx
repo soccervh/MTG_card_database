@@ -26,7 +26,6 @@ function Deck(props) {
         });
     }
   });
-  console.log(expandedCards.length);
   const cardImagesInDeck = expandedCards.map((cardInDeck, t) => {
     return (
       <div
@@ -40,15 +39,18 @@ function Deck(props) {
       </div>
     );
   });
-  const cardsInDeck = deck.cards.map((cardInDeck) => (
-    <ul key={cardInDeck.card.id}>
-      <li>
-        <Link to={`/card/${cardInDeck.card.slug}`}>
-          {cardInDeck.quantity} x {cardInDeck.card.name}
-        </Link>
-      </li>
-    </ul>
-  ));
+  // creates Arrays within the object for the spell_tupe. first one is initialized by the else statement to creature the different arrays. Second time around adds it to the existing array within the object if already created.
+  const spellTypeInDeck = {};
+
+  deck.cards.forEach((typeInDeck) => {
+    if (spellTypeInDeck[typeInDeck.card.spell_type]) {
+      spellTypeInDeck[typeInDeck.card.spell_type].push(typeInDeck);
+    } else {
+      spellTypeInDeck[typeInDeck.card.spell_type] = [typeInDeck];
+    }
+  });
+
+  const cardsInDeck = deck.cards.map((cardInDeck) => <ul key={cardInDeck.card.id}></ul>);
   const manaProps = {};
   deck.color.forEach((color) => (manaProps[color] = 1));
 
@@ -62,6 +64,24 @@ function Deck(props) {
           {cardImagesInDeck}
         </ul>
         <ul className={""}>{cardsInDeck}</ul>
+        {Object.keys(spellTypeInDeck).map((key) => {
+          return (
+            <div>
+              <h6>{key}</h6>
+              <ul>
+                {spellTypeInDeck[key].map((cardInDeck) => {
+                  return (
+                    <li>
+                      <Link to={`/card/${cardInDeck.card.slug}`}>
+                        {cardInDeck.quantity} x {cardInDeck.card.name}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          );
+        })}
       </div>
       {expandedCards.length} cards in deck.
     </div>

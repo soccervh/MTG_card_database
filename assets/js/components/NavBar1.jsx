@@ -27,6 +27,9 @@ function NavBar1() {
           <Link to={"/cards"}>Cards</Link>
         </li>
         <li className="nav-button">
+          <Link to={"/card-creator"}>Card Creator</Link>
+        </li>
+        <li className="nav-button">
           <Link to={"/decks"}>Decks</Link>
         </li>
         <li className="nav-button">
